@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>AWS Network Diagrams</title>
+    <link th:href="@{/webjars/bootstrap/css/bootstrap.min.css}" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+    <style>
+        .diagram-container {
+            width: 100%;
+            height: 400px;
+            min-height: 400px;
+            border: 1px solid #ddd;
+            overflow: auto;
+            position: relative;
+        }
+        .mermaid {
+            min-width: 300px;
+            min-height: 400px;
+        }
+        .text-container {
+            height: 400px;
+            overflow: auto;
+            background: #f8f9fa;
+            border: 1px solid #ddd;
+            padding: 10px;
+            font-family: monospace;
+            font-size: 12px;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+        
+        @media print {
+            .text-container {
+                display: none;
+            }
+            .diagram-container {
+                height: auto;
+                min-height: 300px;
+                overflow: visible;
+                border: 1px solid #000;
+                page-break-inside: avoid;
+            }
+            .mermaid {
+                min-height: 300px;
+                max-width: 100%;
+                transform-origin: top left;
+                transform: scale(0.8);
+            }
+            .mb-5 {
+                page-break-after: always;
+            }
+            .container-fluid {
+                max-width: 100%;
+                margin: 0;
+                padding: 10px;
+            }
+            .row {
+                margin: 0;
+                display: block;
+            }
+            .col-md-6 {
+                width: 100%;
+                float: none;
+                display: block;
+                padding: 5px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container-fluid mt-4">
+        <h1>AWS Network Diagrams</h1>
+        
+        <div th:if="${sections != null}" th:each="section : ${sections}" class="mb-5">
+            <h3 th:text="${section.title}"></h3>
+            <div class="row">
+                <div class="col-md-6">
+                    <h5>Mermaid Text</h5>
+                    <div class="text-container" th:text="${section.text}"></div>
+                </div>
+                <div class="col-md-6">
+                    <h5>Rendered Diagram</h5>
+                    <div class="diagram-container">
+                        <div class="mermaid" th:text="${section.text}"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="row" th:if="${diagram != null and !diagram.isEmpty()}">
+            <div class="col-12">
+                <h3>Network Flow Diagram</h3>
+                <div class="diagram-container">
+                    <div class="mermaid" th:text="${diagram}"></div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="row mt-4" th:if="${markdown != null and !markdown.isEmpty()}">
+            <div class="col-12">
+                <div th:utext="${markdown}"></div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        mermaid.initialize({
+            startOnLoad: false,
+            theme: 'default',
+            flowchart: {
+                useMaxWidth: false,
+                htmlLabels: true
+            }
+        });
+        
+        document.addEventListener('DOMContentLoaded', function() {
+            mermaid.run();
+        });
+    </script>
+    <script th:src="@{/webjars/bootstrap/js/bootstrap.bundle.min.js}"></script>
+</body>
+</html>

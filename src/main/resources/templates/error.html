@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Error</title>
+    <link th:href="@{/webjars/bootstrap/css/bootstrap.min.css}" rel="stylesheet">
+</head>
+<body>
+    <div class="container mt-4">
+        <div class="alert alert-danger">
+            <h4>Error</h4>
+            <p th:text="${error}"></p>
+            <p>Make sure AWS credentials are configured and you have the necessary permissions.</p>
+        </div>
+    </div>
+</body>
+</html>
